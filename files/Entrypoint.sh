@@ -1,3 +1,4 @@
 #!/bin/bash
 
-ls -lah /etc/DeceasedCraft/
+cd "/etc/DeceasedCraft"
+exec "/etc/DeceasedCraft/run.sh"
