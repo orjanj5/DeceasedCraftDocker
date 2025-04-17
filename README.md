@@ -6,6 +6,7 @@ DeceasedCraft Server run in a container built from the ground up.
 ## Requirements
 - Docker (linux) / Docker Desktop (winodws)
 - A minecraft server pack (zip or equivalent)
+- Make sure the Entrypoint.sh file has LF new-lines as it is required by the Alpine OS. (my vsCode sets CRLF automatically)
 
 ## Installation
 Clone Repository
