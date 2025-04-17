@@ -1,0 +1,24 @@
+FROM alpine:latest
+
+# user-creation
+RUN addgroup --gid 1001 dcmcsrv \
+&&  mkdir /home/dcmcsrv/ \
+&&  adduser --home /home/dcmcsrv --disabled-password --shell /bin/bash -G dcmcsrv -u 1001 dcmcsrv
+
+# Adding entrypoint and server files
+ADD --chown=dcmcsrv:dcmcsrv files/Entrypoint-persistent.sh /entrypoint.sh
+
+# Installing required packages
+RUN apk update && apk upgrade \
+&&  apk add --no-cache bash vim \
+&&  apk add --no-cache openjdk21
+
+# Run the rest of the dockerfile from dcmcsrv user
+# This includes when the image is run in a container
+USER dcmcsrv
+
+# Preparing server files and entrypoint
+RUN chmod +x /entrypoint.sh 
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+# ENTRYPOINT [ "/bin/ash" ]

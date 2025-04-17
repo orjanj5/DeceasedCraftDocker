@@ -1,0 +1,20 @@
+services:
+  change-vol-ownership:
+    image: alpine-deceasedcraft-persistent:latest
+    user: root:root
+    entrypoint: ""
+    volumes:
+      - D:\DeceasedCraft_Persistent:/tmp/DeceasedCraft/
+    command: "chown -R dcmcsrv:dcmcsrv /tmp/DeceasedCraft"
+
+  DeceasedCraft_Server_persistent:
+    image: alpine-deceasedcraft-persistent:latest
+    user: dcmcsrv:dcmcsrv
+    ports:
+      - 127.0.0.1:55565:25565
+    volumes:
+      - D:\DeceasedCraft_Persistent:/etc/DeceasedCraft/
+    working_dir: "/etc/DeceasedCraft/"
+    depends_on:
+      change-vol-ownership:
+        condition: service_completed_successfully
