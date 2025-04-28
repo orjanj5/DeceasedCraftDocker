@@ -2,6 +2,8 @@
 
 DeceasedCraft Server run in a container built from the ground up.
 
+All commands and contents of server_parameters.sh are based on using DeceasedCraft's server pack and my user as OP.
+
 ## Requirements
 - Docker (linux) / Docker Desktop (windows)
 - A link to the download of a minecraft server pack (zip)
