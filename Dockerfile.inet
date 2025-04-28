@@ -2,21 +2,22 @@ FROM alpine:latest
 
 # Installing required packages
 RUN apk update && apk upgrade \
-&&  apk add --no-cache bash vim jq \
+&&  apk add --no-cache bash vim jq curl \
 &&  apk add --no-cache openjdk21
+
+SHELL ["/bin/bash", "-c"]
 
 # user-creation
 RUN addgroup --gid 1001 minecraft \
-&&  adduser --disabled-password --shell /bin/bash -G dcmcsrv -u 1001 minecraft
+&&  adduser --disabled-password --shell /bin/bash -G minecraft -u 1001 minecraft
 
 # Adding entrypoint and server files
-ADD --chown=minecraft:minecraft files/Entrypoint-standalone.sh /entrypoint.sh
+ADD --chown=minecraft:minecraft files/Entrypoint-inet.sh /entrypoint.sh
 ADD --chown=minecraft:minecraft files/server_parameters.sh /server_parameters.sh
 
 # Prepare the staging directory with the server files
 RUN . /server_parameters.sh \
 &&  mkdir --parents "$staging_location" \
-&&  chown -R minecraft:minecraft "$staging_location" \
 &&  cd "$staging_location" \
 &&  wget "$download_url" \
 &&  unzip *.zip \
@@ -27,6 +28,7 @@ RUN . /server_parameters.sh \
 &&  echo "eula=true" >> eula.txt \
 &&  echo "server_files_path=$(pwd)" >> /server_parameters.sh \
 &&  mkdir --parents "$volume_location" \
+&&  chown -R minecraft:minecraft "$staging_location" \
 &&  chown -R minecraft:minecraft "$volume_location"
 
 # Run the rest of the dockerfile from minecraft user
