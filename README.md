@@ -1,4 +1,4 @@
-# DeceasedCraftDocker
+# PragmaticMCServerDocker
 
 DeceasedCraft Server run in a container built from the ground up.
 
