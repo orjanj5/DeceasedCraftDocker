@@ -3,6 +3,7 @@
 A pragmatic minecraft server run in a container built from the ground up.
 
 All commands and contents of server_parameters.sh are based on using DeceasedCraft's server pack and my user as OP.
+This will not work if the server pack is not designed to be run on linux
 
 ## Requirements
 - Docker (linux) / Docker Desktop (windows)
