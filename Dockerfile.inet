@@ -1,0 +1,37 @@
+FROM alpine:latest
+
+# Installing required packages
+RUN apk update && apk upgrade \
+&&  apk add --no-cache bash vim jq \
+&&  apk add --no-cache openjdk21
+
+# user-creation
+RUN addgroup --gid 1001 minecraft \
+&&  adduser --disabled-password --shell /bin/bash -G dcmcsrv -u 1001 minecraft
+
+# Adding entrypoint and server files
+ADD --chown=minecraft:minecraft files/Entrypoint-standalone.sh /entrypoint.sh
+ADD --chown=minecraft:minecraft files/server_parameters.sh /server_parameters.sh
+
+# Prepare the staging directory with the server files
+RUN . /server_parameters.sh \
+&&  mkdir --parents "$staging_location" \
+&&  chown -R minecraft:minecraft "$staging_location" \
+&&  cd "$staging_location" \
+&&  wget "$download_url" \
+&&  unzip *.zip \
+&&  chown -R minecraft:minecraft . \
+&&  folder_name=$(ls -d */) \
+&&  cd "$folder_name" \
+&&  java -jar forge*.jar --installServer \
+&&  echo "eula=true" >> eula.txt \
+&&  echo "server_files_path=$(pwd)" >> /server_parameters.sh \
+&&  mkdir --parents "$volume_location" \
+&&  chown -R minecraft:minecraft "$volume_location"
+
+# Run the rest of the dockerfile from minecraft user
+# This includes when the image is run in a container
+USER minecraft
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+# ENTRYPOINT [ "/bin/ash" ]

@@ -2,3 +2,4 @@
 docker_commands.sh
 forge*
 compose.yaml
+*.env
