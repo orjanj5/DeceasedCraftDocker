@@ -1,6 +1,6 @@
 # PragmaticMCServerDocker
 
-DeceasedCraft Server run in a container built from the ground up.
+A pragmatic minecraft server run in a container built from the ground up.
 
 All commands and contents of server_parameters.sh are based on using DeceasedCraft's server pack and my user as OP.
 
